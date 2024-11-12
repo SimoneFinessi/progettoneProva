@@ -21,11 +21,11 @@ export class CrimesService {
   constructor(private http: HttpClient) { }
 
   // Funzione per ottenere i crimini senza parametri
-  getCrimes(): Observable<Crime[]> {
-    return this.http.get<Crime[]>(this.apiUrl).pipe(
+  getCrimes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl).pipe(
       catchError(error => {
-        console.error('Errore durante il recupero dei crimini:', error);
-        throw error; // Gestisci o rilancia l'errore
+        console.error('Errore durante il recupero dei dati GeoJSON:', error);
+        throw error;
       })
     );
   }

@@ -5,6 +5,7 @@ from shapely.geometry import Point
 import matplotlib.pyplot as plt
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
 gf=gpd.read_file("Boundaries.geojson")
 url = 'https://data.cityofchicago.org/resource/ijzp-q8t2.json'
 response = requests.get(url)
@@ -33,11 +34,12 @@ def home():
 
 @app.route('/normal')
 def normal():
-    return jsonify(crime_counts.to_dict(orient="records"))
-
+    geojson_data = json.loads(gf.to_json())
+    return jsonify(geojson_data)
 @app.route('/gdf')
 def gdf():
-    return jsonify(districts_gdf[districts_gdf.index==1.0].to_json())
+    geojson_data = json.loads(districts_gdf.to_json())  
+    return jsonify(geojson_data)
 
 if __name__ == '__main__':
     app.run(debug=True)

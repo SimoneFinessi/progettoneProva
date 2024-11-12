@@ -36,11 +36,13 @@ export class AppComponent implements OnInit {
   loadData(): void {
     this.crimesService.getCrimes().subscribe(
       (data) => {
-        console.log('Dati GeoJSON ricevuti:', data);
-        this.geojsonData = data;
-        console.log(this.geojsonData);
-        // Aggiungi i distretti e i crimini alla mappa
-        this.addDistrictsToMap(this.geojsonData);
+        // Assicurati che data sia un FeatureCollection
+        if (data.type === "FeatureCollection" && Array.isArray(data.features)) {
+          this.geojsonData = data;
+          this.addDistrictsToMap(this.geojsonData);
+        } else {
+          console.error("Formato GeoJSON non valido", data);
+        }
       },
       (error) => {
         console.error('Errore nel recupero dei dati:', error);
